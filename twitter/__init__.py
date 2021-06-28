@@ -5,7 +5,7 @@ import os
 
 class TwitterAPI_V2:
     """A library that provides a Python interface to the Twitter API"""
-    BEARER_TOKEN = "AAAAAAAAAAAAAAAAAAAAAG64QwEAAAAAO3B90btcZOQltdBSLlIs4IP%2BIec%3DK7HsCRd8JLpKS81ZVKOfudMmL2vXa9f6yN2Rgf4IjMBHNLxmJD"
+    BEARER_TOKEN = "<Bearer token>"
 
     def __init__(self):
         self.api = Api(bearer_token=TwitterAPI_V2.BEARER_TOKEN)
