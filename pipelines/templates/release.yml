@@ -1,0 +1,21 @@
+parameters:
+- name: service_connection
+  type: string
+- name: app_type
+  type: string
+- name: app_name
+  type: string
+
+steps:
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      buildType: 'current'
+      artifactName: 'drop'
+      targetPath: '$(System.DefaultWorkingDirectory)'
+  - task: AzureFunctionApp@1
+    displayName: "Deploy artifact to Azure Functions resource"
+    inputs:
+      azureSubscription: '${{ parameters.service_connection }}'
+      appType: ${{ parameters.app_type }}
+      appName: '${{ parameters.app_name }}'
+      package: '$(System.DefaultWorkingDirectory)/**/*.zip'

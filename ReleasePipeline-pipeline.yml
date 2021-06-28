@@ -1,0 +1,16 @@
+trigger:
+  branches:
+    include:
+    - main
+
+pool:
+  vmImage: ubuntu-16.04
+
+extends:
+  template: /pipelines/templates/main.yml
+  parameters:
+    service_connection: '<service_connection>'
+    python_version: '3.8'
+    app_type: 'functionAppLinux'
+    app_runtime: 'python'
+    app_name: 'HeinekenApp'

@@ -1,0 +1,31 @@
+parameters:
+- name: service_connection
+  type: string
+- name: python_version
+  type: string
+- name: app_type
+  type: string
+- name: app_name
+  type: string
+
+stages:
+  - stage: CI
+    displayName: Build Stage
+    jobs:
+      - job: AzFuncBuild
+        displayName: Build Function App
+        steps:
+        - template: /pipelines/templates/build.yml
+          parameters:
+            python_version: '${{ parameters.python_version }}'
+  - stage: CD
+    displayName: Deploy Stage
+    jobs:
+      - job: AzFuncDeploy
+        displayName: Deploy Function App
+        steps:
+        - template: /pipelines/templates/release.yml
+          parameters:
+            service_connection: '${{ parameters.service_connection }}' 
+            app_type: '${{ parameters.app_type }}' 
+            app_name: '${{ parameters.app_name }}'

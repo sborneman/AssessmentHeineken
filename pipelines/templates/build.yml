@@ -1,0 +1,32 @@
+parameters:
+- name: python_version
+  type: string
+
+steps:
+  - task: UsePythonVersion@0
+    displayName: 'Setting python version to ${{ parameters.python_version }} as required by functions'
+    inputs:
+      versionSpec: '${{ parameters.python_version }}'
+      architecture: 'x64'
+      workingDirectory: '/'
+  - bash: |
+      pwd
+      ls
+      if [ -f extensions.csproj ]
+      then
+          dotnet build extensions.csproj --output ./bin
+      fi
+      pip install --target="./.python_packages/lib/site-packages" -r requirements.txt
+    displayName: "Install dependecies & build function" 
+  - task: ArchiveFiles@2
+    displayName: "Store function as artifact"
+    inputs:
+      rootFolderOrFile: "$(System.DefaultWorkingDirectory)"
+      includeRootFolder: false
+      archiveFile: "$(Build.ArtifactStagingDirectory)/build$(Build.BuildId).zip"
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish pipeline Artifact'
+    inputs:
+      targetPath: '$(Build.ArtifactStagingDirectory)'
+      artifact: 'drop'
+      publishLocation: 'pipeline'
